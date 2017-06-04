@@ -6,7 +6,7 @@ LINE_HEADERS = {
     'Authorization' : 'Bearer ' + 'gakjPa74Fw2tlPavkCfeBaFmVPqiSWWjoUBlqKCiJoQ'
 }
 
-app = Flask(__name__)
+application = Flask(__name__)
 
 
 def notify_to_line(message):
@@ -33,7 +33,7 @@ def open_pull_request():
     notify_to_line(message)
 
 
-@app.route('/postreceive', methods=['POST'])
+@application.route('/postreceive', methods=['POST'])
 def hello_world():
     if request.headers['X-GitHub-Event'] == 'pull_request' and request.get_json()['action'] == 'opened':
         open_pull_request()
@@ -41,6 +41,5 @@ def hello_world():
     else:
         return 'hello'
 
-
-if __name__ == '__main__':
-    app.run()
+if __name__ == "__main__":
+    application.run(host='0.0.0.0')
