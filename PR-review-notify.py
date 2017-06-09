@@ -45,8 +45,12 @@ def get_members_who_did_not_approve(PR_owner, PR_number):
     return members
 
 
+PR_URL = 'https://github.com/Nelp-dev/Nelp/pull/'
+
+def get_message_to_request_merge(user, PR_number):
+    return user + '님 머지하세요\n' + PR_URL + PR_number + '\n\n'
+
 def get_message_to_request_approving(user, PR_number):
-    PR_URL = 'https://github.com/Nelp-dev/Nelp/pull/'
     return user + '님 리뷰하세요\n' + PR_URL + PR_number + '\n\n'
 
 
@@ -58,13 +62,15 @@ def main():
     opened_PR_dict_list = get_opened_PR_dict_list()
     if len(opened_PR_dict_list) == 0:
         return
-
     else:
         notify_message = ''
         for PR_dict in opened_PR_dict_list:
             members = get_members_who_did_not_approve(PR_dict['user'], PR_dict['number'])
-            for member in members:
-                notify_message += get_message_to_request_approving(member, PR_dict['number'])
+            if len(members) == 0:
+                notify_message += get_message_to_request_merge(PR_dict['user'], PR_dict['number'])
+            else:
+                for member in members:
+                    notify_message += get_message_to_request_approving(member, PR_dict['number'])
         
         notify_to_line(notify_message)
     
