@@ -7,11 +7,12 @@ urllib3.disable_warnings()
 USER_AGENT = {'user-agent': 'cjh5414'}
 http = urllib3.PoolManager(headers=USER_AGENT)
 
+API_REPO_URL = 'https://api.github.com/repos/Nelp-dev/Nelp'
 MEMBERS = ['cjh5414', 'sim4858', 'NESOY']
 
 
 def get_opened_PR_dict_list():
-    PULLS_URL = 'https://api.github.com/repos/Nelp-dev/Nelp/pulls'
+    PULLS_URL = API_REPO_URL + '/pulls'
     response = http.request('GET', PULLS_URL)
     PR_info_list = json.loads(response.data.decode('utf-8'))
 
@@ -30,7 +31,7 @@ def get_opened_PR_dict_list():
 
 
 def get_members_who_did_not_approve(PR_owner, PR_number):
-    REVIEWS_URL = 'https://api.github.com/repos/Nelp-dev/Nelp/pulls/' + PR_number + '/reviews'
+    REVIEWS_URL = API_REPO_URL + '/pulls/' + PR_number + '/reviews'
     response = http.request('GET', REVIEWS_URL)
     review_info_list = json.loads(response.data.decode('utf-8'))
 
